@@ -1,27 +1,31 @@
+" vim-pathogen
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
 " -------------------
-" $B?'$N@_Dj(B
+" 色の設定
 " -------------------
 syntax on
 
-highlight LineNr ctermfg=darkyellow    " $B9THV9f(B
+highlight LineNr ctermfg=darkyellow    " 行番号
 highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
-"highlight SpecialKey ctermfg=grey " $BFC<l5-9f(B
+"highlight SpecialKey ctermfg=grey " 特殊記号
 
-" $BA43Q%9%Z!<%9$r;k3P2=(B
+" 全角スペースを視覚化
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /$B!!(B/
+match ZenkakuSpace /　/
 
-" $B%?%VI}(B
+" タブ幅
 set ts=4 sw=4
 set softtabstop=4
 set expandtab
 
 " -------------------
-" $BF|K\8l$N@_Dj(B
+" 日本語の設定
 " -------------------
-" $BJ8;z%3!<%I$N<+F0G'<1(B
+" 文字コードの自動認識
 
 if &encoding !=# 'utf-8' 
   set encoding=japan
@@ -31,16 +35,16 @@ endif
 if has('iconv')
   let s:enc_euc = 'euc-jp'
   let s:enc_jis = 'iso-2022-jp'
-  " iconv$B$,(BeucJP-ms$B$KBP1~$7$F$$$k$+$r%A%'%C%/(B
+  " iconvがeucJP-msに対応しているかをチェック
   if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
     let s:enc_euc = 'eucjp-ms'
     let s:enc_jis = 'iso-2022-jp-3'
-  " iconv$B$,(BJISX0213$B$KBP1~$7$F$$$k$+$r%A%'%C%/(B
+  " iconvがJISX0213に対応しているかをチェック
   elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
     let s:enc_euc = 'euc-jisx0213'
     let s:enc_jis = 'iso-2022-jp-3'
   endif
-  " fileencodings$B$r9=C[(B
+  " fileencodingsを構築
   if &encoding ==# 'utf-8' 
     let s:fileencodings_default = &fileencodings
     let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
@@ -61,12 +65,12 @@ if has('iconv')
     endif
   endif
 
-  " $BDj?t$r=hJ,(B
+  " 定数を処分
   unlet s:enc_euc
   unlet s:enc_jis
 endif
 
-" $BF|K\8l$r4^$^$J$$>l9g$O(B fileencoding $B$K(B encoding $B$r;H$&$h$&$K$9$k(B
+" 日本語を含まない場合は fileencoding に encoding を使うようにする
 if has('autocmd')
   function! AU_ReCheck_FENC()
     if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
@@ -76,33 +80,33 @@ if has('autocmd')
   autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
 " -------------------
-" $B8!:w(B
+" 検索
 " -------------------
-" $B8!:wJ8;zNs$,>.J8;z$N>l9g$OBgJ8;z>.J8;z$r6hJL$J$/8!:w$9$k(B(noignorecase)
+" 検索文字列が小文字の場合は大文字小文字を区別なく検索する(noignorecase)
 set ignorecase
-" $B8!:wJ8;zNs$KBgJ8;z$,4^$^$l$F$$$k>l9g$O6hJL$7$F8!:w$9$k(B(nosmartcase)
+" 検索文字列に大文字が含まれている場合は区別して検索する(nosmartcase)
 set smartcase
-" $B8!:wJ8;z$N%O%$%i%$%H$r$7$J$$(B
+" 検索文字のハイライトをしない
 set nohlsearch
-" $B%$%s%/%j%a%s%?%k%5!<%A(B
+" インクリメンタルサーチ
 set incsearch
 
 " -------------------
 " Explore
 " -------------------
-let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'  " $BHsI=<($N@_Dj(B(a$B$G%H%0%k(B)
+let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'  " 非表示の設定(aでトグル)
 let g:explDetailedHelp=0
 let g:explWinSize=''
 let g:explSplitBelow=1
-let g:explUseSeparators=1     " $B%G%#%l%/%H%j$H%U%!%$%k$N4V$/$i$$$K%;%Q%l!<%?I=<((B
+let g:explUseSeparators=1     " ディレクトリとファイルの間くらいにセパレータ表示
 
 " -------------------
-" $B%P%C%U%!4XO"(B
+" バッファ関連
 " -------------------
-set hidden           " $B@Z$jBX$(;~$N(Bundo$B$N8z2L;}B3Ey(B
+set hidden           " 切り替え時のundoの効果持続等
 
 " -------------------
-" $B$=$NB>(B
+" その他
 " -------------------
 set notitle
 set number
