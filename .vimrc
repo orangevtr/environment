@@ -162,4 +162,8 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 " AutoComplPop like behavior.
 "let g:neocomplcache_enable_auto_select = 1
 
+" compiler perl
+autocmd FileType perl,cgi :compiler perl
+
+
 " $Id: .vimrc 21 2009-05-29 05:37:47Z hirayama $
